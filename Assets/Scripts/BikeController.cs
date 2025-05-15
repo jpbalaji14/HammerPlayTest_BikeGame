@@ -6,6 +6,12 @@ public class BikeController : MonoBehaviour
     [SerializeField] private Rigidbody2D _frontTyreRigidbody2D;
     [SerializeField] private Rigidbody2D _backTyreRigidbody2D;
     [SerializeField] private Rigidbody2D _bikeRigidbody2D;
+    [SerializeField] private WheelJoint2D _frontWheelJoint;
+    [SerializeField] private WheelJoint2D _backWheelJoint;
+    [SerializeField] private Transform _bikeBodyTransform;
+    [SerializeField] private SpriteRenderer _bikeBodySpriteRenderer;
+    [SerializeField] private SpriteRenderer _bikeHeadSpriteRenderer;
+    [SerializeField] private Color _bikeCrashColor;
     [SerializeField] private float _speed;
     [SerializeField] private float _rotatitonSpeed;
     [SerializeField] private float _tiltTorque;
@@ -55,22 +61,22 @@ public class BikeController : MonoBehaviour
 
     public void BikeSetup()
     {
-        this.transform.position = _startPosition;
-        _bikeRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-        this.GetComponent<AudioSource>().enabled = true;
+        GameManager.Instance.UiManager.SetupCamBikeTracking(_bikeBodyTransform);
+        GameManager.Instance.AudioManager.SetUpBikeAudioSource(_bikeBodyTransform.GetComponent<AudioSource>());
+        GameManager.Instance.UiManager.SetupBikeSprite(_bikeBodySpriteRenderer, _bikeHeadSpriteRenderer);
     }
-    public void TurnOffBike()
-    {  
-        _isStartedMoving = false;
-        this.gameObject.SetActive(false);
-    }
-    public void StopBikeMovement()
+
+    public void CrashBike()
     {
+        _bikeBodySpriteRenderer.color = _bikeCrashColor;
         _bikeRigidbody2D.bodyType = RigidbodyType2D.Static;
+        _frontWheelJoint.enabled = false;
+        _backWheelJoint.enabled = false;
         this.GetComponent<AudioSource>().enabled=false;
     }
-    private void OnDisable()
+    public void DestroyBike()
     {
-        TurnOffBike();
+        Destroy(this.gameObject);
     }
+  
 }

@@ -65,6 +65,7 @@ public class SaveManager:MonoBehaviour
         for (int i = 0; i < _shopData.Count; i++)
         {
             ShopPurchaseData data = new ShopPurchaseData();
+            data.ItemIndex = _shopData[i].ItemIndex;
             data.IsUnlocked = _shopData[i].IsUnlocked;
             data.UnlockAmount = _shopData[i].UnlockAmount;
             data.IsEquipped = _shopData[i].IsEquipped;
@@ -72,10 +73,13 @@ public class SaveManager:MonoBehaviour
         }
         string saveData = JsonConvert.SerializeObject(shopDataList);
         PlayerPrefs.SetString("ShopData", saveData);
+        PlayerPrefs.SetInt("CurrentShopDataIndex", GameManager.Instance.ShopManager.GetCurrentEquippedIndex());
         _stringShopData = saveData;
     }
     public void GetShopData(List<ShopPurchaseData> _shopData)
     {
+        int _index = PlayerPrefs.GetInt("CurrentShopDataIndex");
+        GameManager.Instance.ShopManager.SetCurrentEquippedIndex(_index);
         _stringShopData = PlayerPrefs.GetString("ShopData");
         if (!string.IsNullOrEmpty(_stringShopData))
         {
@@ -84,7 +88,7 @@ public class SaveManager:MonoBehaviour
             _shopData.AddRange(shopDataList);
             for (int i = 0; i < _shopData.Count; i++)
             {
-                _shopData[i].VehicleSprite = Resources.Load<Sprite>("Vehicles/Vehicle_" + (i + 1));
+                _shopData[i].VehicleSprite = Resources.Load<Sprite>("Vehicles/Vehicle_" + _shopData[i].ItemIndex);
             }
         }
         GameManager.Instance.ShopManager.SetupShop();

@@ -11,6 +11,7 @@ using UnityEngine.UI;
 [Serializable]
 public class ShopPurchaseData
 {
+    public int ItemIndex;
     public bool IsUnlocked;
     public int UnlockAmount;
     public bool IsEquipped;
@@ -19,7 +20,8 @@ public class ShopPurchaseData
 }
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] private int _currentItemIndex=0;
+    [SerializeField] private int _currentItemIndex;
+    [SerializeField] private int _currentEquippedItemIndex;
     [SerializeField] private bool _isTransitioning=false;
     [SerializeField] private Image _itemImage;
     [SerializeField] private RectTransform _itemTransform;
@@ -128,6 +130,7 @@ public class ShopManager : MonoBehaviour
                 _shopItemsDataList[i].IsEquipped = true;
             }
         }
+       _currentEquippedItemIndex = _currentItemIndex;
         UpdateButtonsAndText();
         SaveShopData();
     }
@@ -157,6 +160,21 @@ public class ShopManager : MonoBehaviour
     public void GetShopData()
     {
         GameManager.Instance.SaveManager.GetShopData(_shopItemsDataList);
+    }
+
+    public int GetCurrentEquippedIndex()
+    {
+        return _currentEquippedItemIndex;
+    } 
+    public int GetCurrentListEquippedIndex()
+    {
+        return _shopItemsDataList[_currentEquippedItemIndex].ItemIndex;
+    } 
+
+    public void SetCurrentEquippedIndex(int _value)
+    {
+        _currentEquippedItemIndex = _value;
+        _currentItemIndex = _currentEquippedItemIndex;
     }
     #endregion
 }

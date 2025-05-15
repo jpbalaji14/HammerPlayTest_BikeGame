@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public AudioManager AudioManager;
     public MobileController MobileController;
     public int Coins;
+    [SerializeField] private GameObject _bikePrefab;
     private void Awake()
     {
         if (Instance == null)
@@ -23,5 +24,10 @@ public class GameManager : MonoBehaviour
         SaveManager.GetWalletData();
         MenuManager.GetLevelData();
         ShopManager.GetShopData();
+    }
+    public void SpawnBike()
+    {
+       GameObject bike= Instantiate(_bikePrefab);
+        BikeController = bike.GetComponent<BikeController>();
     }
 }

@@ -9,12 +9,17 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip _jump;
     [SerializeField] private AudioClip _levelComplete;
 
+    public void SetUpBikeAudioSource(AudioSource _source)
+    {
+        _bikeAudioSource = _source;
+    }
    public void Accelerate()
    {
         _bikeAudioSource.enabled=true;
    } 
     public void Idle()
     {
+        if(_bikeAudioSource!=null)
         _bikeAudioSource.enabled = false;
     }
   

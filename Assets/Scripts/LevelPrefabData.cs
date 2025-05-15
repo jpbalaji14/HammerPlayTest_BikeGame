@@ -19,6 +19,7 @@ public class LevelPrefabData : MonoBehaviour
     }
     public void OnLevelClicked()
     {
+        GameManager.Instance.AudioManager.ButtonClick();
         GameManager.Instance.MenuManager.OpenGameLevel(LevelNumber);
     }
 }

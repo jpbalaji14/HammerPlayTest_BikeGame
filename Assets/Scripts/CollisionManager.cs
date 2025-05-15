@@ -5,24 +5,30 @@ public class CollisionManager : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (collision.gameObject.tag == "Enemy")
-        //{
-        //    if (collision.gameObject.name.Contains("Enemy"))
-        //    {
-        //        GameManager.Instance.AudioManager.HitSpike();
-        //    }
-        //    Invoke(nameof(GameOver), 1f);
-        //}
-        
-        if(collision.gameObject.tag == "Finish")
+        if (collision.gameObject.tag == "Finish")
         {
             GameManager.Instance.MenuManager.OnGameLevelComplete();
             GameManager.Instance.AudioManager.LevelComplete();
         }
     }
 
-   void GameOver()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Restart Game
+        if (this.gameObject.tag == "PlayerBody" && collision.gameObject.tag == "Ground")
+        {
+            GameManager.Instance.BikeController.CrashBike();
+            Invoke(nameof(RestartGame),2f);
+        } 
+        
+        if (this.gameObject.tag == "PlayerBody" && collision.gameObject.tag == "Obstacle")
+        {
+            GameManager.Instance.BikeController.CrashBike();
+            Invoke(nameof(RestartGame),2f);
+        }
+
+    }
+    void RestartGame()
+    {
+        GameManager.Instance.MenuManager.RestartGameLevel();
     }
 }

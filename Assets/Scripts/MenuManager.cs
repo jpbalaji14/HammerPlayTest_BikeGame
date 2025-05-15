@@ -129,16 +129,16 @@ public class MenuManager : MonoBehaviour
         GameManager.Instance.UiManager.ChangeGameBackground(_levelData[_levelDataCurrentIndex].LevelBackgroundColorCode);
         _menuPanel.SetActive(false);
         _animator.Play("LevelSelectClose");
-        GameManager.Instance.BikeController.gameObject.SetActive(true);
+        GameManager.Instance.SpawnBike();
     }
 
     public void RestartGameLevel()
     {
         Debug.Log("Game Restart");
-        GameManager.Instance.BikeController.gameObject.SetActive(false);
+        GameManager.Instance.BikeController.DestroyBike();
         GameManager.Instance.TimerController.StopTimer();
         GameManager.Instance.TimerController.ResetTimer();
-        GameManager.Instance.BikeController.gameObject.SetActive(true);
+        GameManager.Instance.SpawnBike();
     }
 
     public void OnGameLevelComplete()
@@ -155,7 +155,8 @@ public class MenuManager : MonoBehaviour
         SaveLevelData();
         GameManager.Instance.SaveManager.SaveWalletData();
         OpenGameResult();
-        GameManager.Instance.BikeController.StopBikeMovement();
+        GameManager.Instance.BikeController.DestroyBike();
+
     }
 
     void CheckAndUpdateQuickerGameFinishTime()
@@ -165,11 +166,22 @@ public class MenuManager : MonoBehaviour
             int _totalMillisA = GameManager.Instance.TimerController.ConvertToTotalMilliseconds(_levelData[_levelDataCurrentIndex].BestTime);
             int _totalMillisB = GameManager.Instance.TimerController.ConvertToTotalMilliseconds(GameManager.Instance.UiManager.GetTimerValueAsString());
             if (_totalMillisB < _totalMillisA)
+            {
+                Debug.Log("fast");
                 _levelData[_levelDataCurrentIndex].BestTime = GameManager.Instance.UiManager.GetTimerValueAsString();
+                GameManager.Instance.UiManager.ShowResultTime(_levelData[_levelDataCurrentIndex].BestTime, true);
+            }
+            else
+            {
+                Debug.Log("Not so fast");
+                GameManager.Instance.UiManager.ShowResultTime(GameManager.Instance.UiManager.GetTimerValueAsString(), false);
+            }
         }
         else
         {
             _levelData[_levelDataCurrentIndex].BestTime = GameManager.Instance.UiManager.GetTimerValueAsString();
+
+            GameManager.Instance.UiManager.ShowResultTime(_levelData[_levelDataCurrentIndex].BestTime, true);
         }
     }
     [ContextMenu("SavePRefs")]

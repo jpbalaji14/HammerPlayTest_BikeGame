@@ -22,7 +22,7 @@ public class RewardManager : MonoBehaviour
 
     public void OnClaimRewardClicked()
     {
-        SetUpParticles(GameManager.Instance.UiManager._resultCoinParent, GameManager.Instance.UiManager._resultCoinStartPos,GameManager.Instance.UiManager._resultCoinEndPos);
+        SetUpParticles(GameManager.Instance.UiManager.ResultCoinParent, GameManager.Instance.UiManager.ResultCoinStartPos,GameManager.Instance.UiManager.ResultCoinEndPos);
         for (int i = 0; i < _rewardAmount; i++) 
         {
             var _targetDelay = i*_coinDelay;
@@ -33,7 +33,7 @@ public class RewardManager : MonoBehaviour
     }
     public void OnShopPurchaseClicked()
     {
-        SetUpParticles(GameManager.Instance.UiManager._purchaseCoinParent, GameManager.Instance.UiManager._purchaseCoinStartPos,GameManager.Instance.UiManager._purchaseCoinEndPos);
+        SetUpParticles(GameManager.Instance.UiManager.PurchaseCoinParent, GameManager.Instance.UiManager.PurchaseCoinStartPos,GameManager.Instance.UiManager.PurchaseCoinEndPos);
         for (int i = 0; i < _rewardAmount; i++) 
         {
             var _targetDelay = i*_coinDelay;
@@ -63,7 +63,6 @@ public class RewardManager : MonoBehaviour
         GameManager.Instance.MenuManager.OpenLevelSelect();
         yield return new WaitForSeconds(1f);
         GameManager.Instance.MenuManager.CloseGameResult();
-        GameManager.Instance.BikeController.gameObject.SetActive(false);
     }
 
    
