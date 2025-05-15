@@ -5,7 +5,7 @@ public class CollisionManager : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Finish")
+        if (this.gameObject.tag == "PlayerBody" && collision.gameObject.tag == "Finish")
         {
             GameManager.Instance.MenuManager.OnGameLevelComplete();
             GameManager.Instance.AudioManager.LevelComplete();
@@ -20,7 +20,7 @@ public class CollisionManager : MonoBehaviour
             Invoke(nameof(RestartGame),2f);
         } 
         
-        if (this.gameObject.tag == "PlayerBody" && collision.gameObject.tag == "Obstacle")
+        if (this.gameObject.tag == "Obstacle")
         {
             GameManager.Instance.BikeController.CrashBike();
             Invoke(nameof(RestartGame),2f);

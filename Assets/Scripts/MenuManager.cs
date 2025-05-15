@@ -147,7 +147,7 @@ public class MenuManager : MonoBehaviour
         GameManager.Instance.TimerController.StopTimer();
        _levelData[_levelDataCurrentIndex].IsCompleted = true;
         GameManager.Instance.RewardManager.RewardPlayer();
-        if (CurrentLevelNumber < _levelData.Count) 
+        if (CurrentLevelNumber <= _levelData.Count) 
         { 
             _levelData[CurrentLevelNumber].IsLocked = false;
             CheckAndUpdateQuickerGameFinishTime();

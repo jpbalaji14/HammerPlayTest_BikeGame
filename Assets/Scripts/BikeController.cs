@@ -24,39 +24,69 @@ public class BikeController : MonoBehaviour
     }
     void Update()
     {
+        HandleInput();
+        CheckStartMovement();
+        UpdateBikeSound();
+        ApplyTilt();
+    }
+    private void HandleInput()
+    {
         _moveInput = Input.GetAxisRaw("Vertical");
-        if (_moveInput > 0)
-        {
-            GameManager.Instance.AudioManager.Accelerate();
-        }
-        else
-        {
-            GameManager.Instance.AudioManager.Idle();
-        }
-        if (!_isStartedMoving && IsMovementKeyPressed()) 
+    }
+    private void CheckStartMovement()
+    {
+        if (!_isStartedMoving && IsMovementKeyPressed())
         {
             _isStartedMoving = true;
             GameManager.Instance.TimerController.TimerStart();
         }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            _bikeRigidbody2D.AddTorque(_tiltTorque);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            _bikeRigidbody2D.AddTorque(-_tiltTorque);
-        }
+    }
+    private void UpdateBikeSound()
+    {
+        if (_moveInput > 0)
+            GameManager.Instance.AudioManager.Accelerate();
+        else
+            GameManager.Instance.AudioManager.Idle();
     }
     bool IsMovementKeyPressed()
     {
         return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) ||Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
     }
+
     private void FixedUpdate()
     {
-            _frontTyreRigidbody2D.AddTorque(-_moveInput*_speed*Time.fixedDeltaTime);
-            _backTyreRigidbody2D.AddTorque(-_moveInput*_speed*Time.fixedDeltaTime);
-            _bikeRigidbody2D.AddTorque(_moveInput*_rotatitonSpeed*Time.fixedDeltaTime);
+        ApplyWheelTorque();
+    }
+    private void ApplyWheelTorque()
+    {
+        if (_moveInput > 0)
+        {
+            float _torque = -_moveInput * _speed * Time.fixedDeltaTime;
+            _frontTyreRigidbody2D.AddTorque(_torque);
+            _backTyreRigidbody2D.AddTorque(_torque);
+        }
+        else if (_moveInput < 0f)
+        {
+            float _brakeTorque = _speed * 3f * Time.fixedDeltaTime;
+            _frontTyreRigidbody2D.AddTorque(_brakeTorque);
+            _backTyreRigidbody2D.AddTorque(_brakeTorque);
+        }
+
+        // Prevent reverse wheel spin
+        if (_frontTyreRigidbody2D.angularVelocity > 0f)
+            _frontTyreRigidbody2D.angularVelocity = 0f;
+
+        if (_backTyreRigidbody2D.angularVelocity > 0f)
+            _backTyreRigidbody2D.angularVelocity = 0f;
+
+        _bikeRigidbody2D.AddTorque(_moveInput * _rotatitonSpeed * Time.fixedDeltaTime);
+    }
+    private void ApplyTilt()
+    {
+        if (Input.GetKey(KeyCode.A))
+            _bikeRigidbody2D.AddTorque(_tiltTorque);
+        else if (Input.GetKey(KeyCode.D))
+            _bikeRigidbody2D.AddTorque(-_tiltTorque);
     }
 
     public void BikeSetup()
