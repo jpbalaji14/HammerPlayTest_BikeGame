@@ -1,0 +1,27 @@
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{   public static GameManager Instance;
+    public MenuManager MenuManager;
+    public UiManager UiManager;
+    public ShopManager ShopManager;
+    public BikeController BikeController;
+    public TimerController TimerController;
+    public RewardManager RewardManager;
+    public SaveManager SaveManager;
+    public AudioManager AudioManager;
+    public MobileController MobileController;
+    public int Coins;
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        SaveManager.GetWalletData();
+        MenuManager.GetLevelData();
+        ShopManager.GetShopData();
+    }
+}
