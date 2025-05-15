@@ -84,6 +84,7 @@ public class ShopManager : MonoBehaviour
 
         _purchaseButton.interactable = !_shopItemsDataList[_currentItemIndex].IsUnlocked && _shopItemsDataList[_currentItemIndex].UnlockAmount > 0 ? true : false;
         _purchaseAmountText.text = !_shopItemsDataList[_currentItemIndex].IsUnlocked &&  _shopItemsDataList[_currentItemIndex].UnlockAmount > 0 ? _shopItemsDataList[_currentItemIndex].UnlockAmount.ToString() : "Unlocked";
+        GameManager.Instance.UiManager.CheckPurchaseState(_shopItemsDataList[_currentItemIndex].IsUnlocked, _shopItemsDataList[_currentItemIndex].UnlockAmount);
 
         _equipButton.interactable =  _shopItemsDataList[_currentItemIndex].IsUnlocked && !_shopItemsDataList[_currentItemIndex].IsEquipped ? true : false;
         _equipText.text = _shopItemsDataList[_currentItemIndex].IsEquipped ? "Equipped" : "Equip";
@@ -102,6 +103,7 @@ public class ShopManager : MonoBehaviour
     {
         if (_shopItemsDataList[_currentItemIndex].UnlockAmount <= GameManager.Instance.Coins)
         {
+            GameManager.Instance.RewardManager.OnShopPurchaseClicked();
             _lockGameobject.SetActive(false);
             _shopItemsDataList[_currentItemIndex].IsUnlocked = true;
             SortShopList();

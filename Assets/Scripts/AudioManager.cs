@@ -3,22 +3,19 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource _sfxAudioSource; 
-    [SerializeField] private AudioClip _accelerateSound;
-    [SerializeField] private AudioClip _brakeSound;
+    [SerializeField] private AudioSource _bikeAudioSource; 
     [SerializeField] private AudioClip _coinsCollect;
     [SerializeField] private AudioClip _buttonClick;
     [SerializeField] private AudioClip _jump;
     [SerializeField] private AudioClip _levelComplete;
 
    public void Accelerate()
+   {
+        _bikeAudioSource.enabled=true;
+   } 
+    public void Idle()
     {
-        _sfxAudioSource.clip = _accelerateSound;
-        _sfxAudioSource.Play();
-    } 
-    public void Brake()
-    {
-        _sfxAudioSource.clip = _brakeSound;
-        _sfxAudioSource.Play();
+        _bikeAudioSource.enabled = false;
     }
   
     public void CoinsCollect()

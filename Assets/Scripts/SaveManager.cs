@@ -16,6 +16,7 @@ public class SaveManager:MonoBehaviour
             LevelDetails data = new LevelDetails();
             data.IsLocked = _levelData[i].IsLocked;
             data.IsCompleted = _levelData[i].IsCompleted;
+            data.LevelBackgroundColorCode = _levelData[i].LevelBackgroundColorCode;
             if (!string.IsNullOrEmpty(_levelData[i].BestTime))
                 data.BestTime = _levelData[i].BestTime;
             levelDataList.Add(data);
@@ -32,10 +33,10 @@ public class SaveManager:MonoBehaviour
              _levelData.Clear();
             List<LevelDetails> levelDataList = JsonConvert.DeserializeObject<List<LevelDetails>>(_stringLevelData);
             _levelData.AddRange(levelDataList);
-            for (int i = 0; i < _levelData.Count; i++)
-            {
-                _levelData[i].LevelBackground = Resources.Load<Sprite>("LevelBg/Level_" + (i + 1));
-            }
+            //for (int i = 0; i < _levelData.Count; i++)
+            //{
+            //    _levelData[i].LevelBackgroundColor = Resources.Load<Color>("LevelBg/Level_" + (i + 1));
+            //}
         }
         GameManager.Instance.MenuManager.SetUpLevelGameObjects();
     }

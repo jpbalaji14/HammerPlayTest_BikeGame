@@ -19,7 +19,14 @@ public class BikeController : MonoBehaviour
     void Update()
     {
         _moveInput = Input.GetAxisRaw("Vertical");
-
+        if (_moveInput > 0)
+        {
+            GameManager.Instance.AudioManager.Accelerate();
+        }
+        else
+        {
+            GameManager.Instance.AudioManager.Idle();
+        }
         if (!_isStartedMoving && IsMovementKeyPressed()) 
         {
             _isStartedMoving = true;
@@ -50,6 +57,7 @@ public class BikeController : MonoBehaviour
     {
         this.transform.position = _startPosition;
         _bikeRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        this.GetComponent<AudioSource>().enabled = true;
     }
     public void TurnOffBike()
     {  
@@ -59,6 +67,7 @@ public class BikeController : MonoBehaviour
     public void StopBikeMovement()
     {
         _bikeRigidbody2D.bodyType = RigidbodyType2D.Static;
+        this.GetComponent<AudioSource>().enabled=false;
     }
     private void OnDisable()
     {

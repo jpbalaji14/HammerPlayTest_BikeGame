@@ -6,7 +6,7 @@ public class RewardManager : MonoBehaviour
 {
     [SerializeField] private int _rewardAmount;
 
-    [Header("Particles")]
+    [Header("CoinReward Particles")]
     [SerializeField] private GameObject _coinPrefab;
     [SerializeField] private Transform _coinParent;
     [SerializeField] private Transform _coinStartPos;
@@ -22,6 +22,7 @@ public class RewardManager : MonoBehaviour
 
     public void OnClaimRewardClicked()
     {
+        SetUpParticles(GameManager.Instance.UiManager._resultCoinParent, GameManager.Instance.UiManager._resultCoinStartPos,GameManager.Instance.UiManager._resultCoinEndPos);
         for (int i = 0; i < _rewardAmount; i++) 
         {
             var _targetDelay = i*_coinDelay;
@@ -29,6 +30,22 @@ public class RewardManager : MonoBehaviour
         }
         
         StartCoroutine(MoveToNextLevel());
+    }
+    public void OnShopPurchaseClicked()
+    {
+        SetUpParticles(GameManager.Instance.UiManager._purchaseCoinParent, GameManager.Instance.UiManager._purchaseCoinStartPos,GameManager.Instance.UiManager._purchaseCoinEndPos);
+        for (int i = 0; i < _rewardAmount; i++) 
+        {
+            var _targetDelay = i*_coinDelay;
+            ShowCoinparticles(_targetDelay);
+        }
+    }
+
+    void SetUpParticles(Transform _parent, Transform _start, Transform _end)
+    {
+        _coinParent = _parent;
+        _coinStartPos = _start;
+        _coinEndPos = _end;
     }
     void ShowCoinparticles(float delay)
     {
@@ -49,8 +66,5 @@ public class RewardManager : MonoBehaviour
         GameManager.Instance.BikeController.gameObject.SetActive(false);
     }
 
-    //void CloseGameResult()
-    //{
-    //    GameManager.Instance.MenuManager.CloseGameResult();
-    //}
+   
 }

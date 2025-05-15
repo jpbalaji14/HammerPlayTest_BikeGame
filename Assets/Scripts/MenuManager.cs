@@ -10,8 +10,8 @@ public class LevelDetails
     public bool IsLocked;
     public bool IsCompleted;
     public string BestTime;
-    [Newtonsoft.Json.JsonIgnore] // Ignore this during serialization/deserialization
-    public Sprite LevelBackground;
+    public string LevelBackgroundColorCode;
+    //[Newtonsoft.Json.JsonIgnore] // Ignore this during serialization/deserialization
 }
 
 public class MenuManager : MonoBehaviour
@@ -33,7 +33,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Transform _levelGameObjectSpawnTransform;
     [SerializeField] private List<LevelPrefabData> _levelGameObjectList;
 
-   
     private void Start()
     {
     }
@@ -122,13 +121,12 @@ public class MenuManager : MonoBehaviour
 
     public void OpenGameLevel(int levelNumber)
     {
-
         Debug.Log("Opened Game Level "+ levelNumber);
         CurrentLevelNumber = levelNumber;
         _levelDataCurrentIndex = CurrentLevelNumber - 1;
         _levelPlayableGameobjectList[_levelDataCurrentIndex].gameObject.SetActive(true);
-        //GameManager.Instance.UiManager.ChangeGameBackground(_levelData[_levelDataCurrentIndex].LevelBackground);
         GameManager.Instance.TimerController.ResetTimer();
+        GameManager.Instance.UiManager.ChangeGameBackground(_levelData[_levelDataCurrentIndex].LevelBackgroundColorCode);
         _menuPanel.SetActive(false);
         _animator.Play("LevelSelectClose");
         GameManager.Instance.BikeController.gameObject.SetActive(true);
