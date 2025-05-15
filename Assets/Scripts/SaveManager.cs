@@ -16,6 +16,8 @@ public class SaveManager:MonoBehaviour
             LevelDetails data = new LevelDetails();
             data.IsLocked = _levelData[i].IsLocked;
             data.IsCompleted = _levelData[i].IsCompleted;
+            if (!string.IsNullOrEmpty(_levelData[i].BestTime))
+                data.BestTime = _levelData[i].BestTime;
             levelDataList.Add(data);
         }
         string saveData = JsonConvert.SerializeObject(levelDataList);

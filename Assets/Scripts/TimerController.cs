@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -55,5 +56,18 @@ public class TimerController : MonoBehaviour
     public float GetTime()
     {
         return _currentTime;
+    }
+
+    public int ConvertToTotalMilliseconds(string timeStr)
+    {
+        string[] parts = timeStr.Split(':');
+
+        if (parts.Length != 2)
+            throw new FormatException("Time string is not in the expected format mm:sss");
+
+        int minutes = int.Parse(parts[0]);
+        int milliseconds = int.Parse(parts[1]);
+
+        return minutes * 60 * 1000 + milliseconds;
     }
 }

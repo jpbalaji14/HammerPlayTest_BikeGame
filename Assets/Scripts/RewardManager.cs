@@ -27,6 +27,7 @@ public class RewardManager : MonoBehaviour
             var _targetDelay = i*_coinDelay;
             ShowCoinparticles(_targetDelay);
         }
+        
         StartCoroutine(MoveToNextLevel());
     }
     void ShowCoinparticles(float delay)
@@ -41,6 +42,7 @@ public class RewardManager : MonoBehaviour
     IEnumerator MoveToNextLevel()
     {
         yield return new WaitForSeconds(2f);
+        GameManager.Instance.UiManager.UpdateCoinsText();
         GameManager.Instance.MenuManager.OpenLevelSelect();
         yield return new WaitForSeconds(1f);
         GameManager.Instance.MenuManager.CloseGameResult();

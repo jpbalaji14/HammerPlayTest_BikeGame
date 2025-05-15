@@ -17,6 +17,10 @@ public class UiManager : MonoBehaviour
     {
         _timerText.text = $"{_seconds:00}:{milliseconds:00}";
     }
+    public string GetTimerValueAsString()
+    {
+        return _timerText.text;
+    }
     public void ChangeGameBackground(Sprite sprite)
     {
         _gameBgImage.sprite = sprite;

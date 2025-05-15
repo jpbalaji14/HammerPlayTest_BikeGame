@@ -1,16 +1,15 @@
 using Newtonsoft.Json;
-using NUnit.Framework.Constraints;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using System.Globalization;
 
 [Serializable]
 public class LevelDetails
 {
     public bool IsLocked;
     public bool IsCompleted;
+    public string BestTime;
     [Newtonsoft.Json.JsonIgnore] // Ignore this during serialization/deserialization
     public Sprite LevelBackground;
 }
@@ -105,7 +104,7 @@ public class MenuManager : MonoBehaviour
             _levelPrefabData.LevelNumber = i + 1;
             _levelGameObjectList.Add(_levelPrefabData);
             _levelPrefabData.CheckLevelLockState(_levelData[i].IsLocked);
-            _levelPrefabData.UpdateLevelInfo();
+            _levelPrefabData.UpdateLevelInfo(_levelData[i].BestTime);
         }
     }
 
@@ -116,6 +115,7 @@ public class MenuManager : MonoBehaviour
         {
             _levelPlayableGameobjectList[i].gameObject.SetActive(false); //Disables All Game Playable Level Prefab from Hierarchy
             _levelGameObjectList[i].CheckLevelLockState(_levelData[i].IsLocked); //Check if Level is Unlocked and removes lock gameobject from level selection panel game level prefab
+            _levelGameObjectList[i].UpdateLevelInfo(_levelData[i].BestTime); //Check if Level is Unlocked and removes lock gameobject from level selection panel game level prefab
         }
     }
 
@@ -149,11 +149,30 @@ public class MenuManager : MonoBehaviour
         GameManager.Instance.TimerController.StopTimer();
        _levelData[_levelDataCurrentIndex].IsCompleted = true;
         GameManager.Instance.RewardManager.RewardPlayer();
-        if (CurrentLevelNumber < _levelData.Count) _levelData[CurrentLevelNumber].IsLocked = false;
+        if (CurrentLevelNumber < _levelData.Count) 
+        { 
+            _levelData[CurrentLevelNumber].IsLocked = false;
+            CheckAndUpdateQuickerGameFinishTime();
+        }
         SaveLevelData();
         GameManager.Instance.SaveManager.SaveWalletData();
         OpenGameResult();
         GameManager.Instance.BikeController.StopBikeMovement();
+    }
+
+    void CheckAndUpdateQuickerGameFinishTime()
+    {
+        if (!string.IsNullOrEmpty(_levelData[_levelDataCurrentIndex].BestTime))
+        {
+            int _totalMillisA = GameManager.Instance.TimerController.ConvertToTotalMilliseconds(_levelData[_levelDataCurrentIndex].BestTime);
+            int _totalMillisB = GameManager.Instance.TimerController.ConvertToTotalMilliseconds(GameManager.Instance.UiManager.GetTimerValueAsString());
+            if (_totalMillisB < _totalMillisA)
+                _levelData[_levelDataCurrentIndex].BestTime = GameManager.Instance.UiManager.GetTimerValueAsString();
+        }
+        else
+        {
+            _levelData[_levelDataCurrentIndex].BestTime = GameManager.Instance.UiManager.GetTimerValueAsString();
+        }
     }
     [ContextMenu("SavePRefs")]
     public void SaveLevelData()
