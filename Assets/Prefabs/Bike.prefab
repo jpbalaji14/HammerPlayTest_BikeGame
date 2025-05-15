@@ -526,7 +526,7 @@ MonoBehaviour:
   _bikeBodySpriteRenderer: {fileID: 2990687324059767192}
   _bikeHeadSpriteRenderer: {fileID: 2411365910953830576}
   _bikeCrashColor: {r: 0.4056604, g: 0.38843897, b: 0.38843897, a: 1}
-  _speed: 300
+  _speed: 400
   _rotatitonSpeed: 300
   _tiltTorque: 15
   _moveInput: 0

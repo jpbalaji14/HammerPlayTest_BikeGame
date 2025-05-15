@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     public RewardManager RewardManager;
     public SaveManager SaveManager;
     public AudioManager AudioManager;
-    public MobileController MobileController;
     public int Coins;
     [SerializeField] private GameObject _bikePrefab;
     private void Awake()

@@ -72,7 +72,6 @@ public class BikeController : MonoBehaviour
             _backTyreRigidbody2D.AddTorque(_brakeTorque);
         }
 
-        // Prevent reverse wheel spin
         if (_frontTyreRigidbody2D.angularVelocity > 0f)
             _frontTyreRigidbody2D.angularVelocity = 0f;
 
