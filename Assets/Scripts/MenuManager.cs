@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
+using NUnit.Framework.Constraints;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,6 +22,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject _levelSelectPanel;
     [SerializeField] private GameObject _controlsPanel;
     [SerializeField] private GameObject _shopPanel;
+    [SerializeField] private GameObject _gameResultPanel;
     [SerializeField] private Animator _animator;
 
     [Header("LevelData")]
@@ -76,6 +79,14 @@ public class MenuManager : MonoBehaviour
         _menuPanel.SetActive(true);
         _animator.Play("MenuOpen");
     }
+    public void OpenGameResult()
+    {
+        _gameResultPanel.SetActive(true);
+    }
+    public void CloseGameResult()
+    {
+        _gameResultPanel.SetActive(false);
+    }
     public void QuitGame()
     {
         Application.Quit();
@@ -117,44 +128,32 @@ public class MenuManager : MonoBehaviour
         _levelDataCurrentIndex = CurrentLevelNumber - 1;
         _levelPlayableGameobjectList[_levelDataCurrentIndex].gameObject.SetActive(true);
         //GameManager.Instance.UiManager.ChangeGameBackground(_levelData[_levelDataCurrentIndex].LevelBackground);
+        GameManager.Instance.TimerController.ResetTimer();
         _menuPanel.SetActive(false);
         _animator.Play("LevelSelectClose");
-        GameManager.Instance.MobileController.EnableMobileControls();
         GameManager.Instance.BikeController.gameObject.SetActive(true);
-        GameManager.Instance.TimerController.TimerStart();
     }
 
     public void RestartGameLevel()
     {
-        //GameManager.Instance.UiManager.SetupGearsonGameUI();
-        //GameManager.Instance.UiManager.CloseGameResult();
-        //_levelGameObjectList[CurrentLevel - 1].SetActive(true);
-        //GameManager.Instance.Player.gameObject.SetActive(true);
-        //GameManager.Instance.Player.ResetPlayer();
-        //for (int i = 0; i < _levelItemsList[CurrentLevel - 1].Gear.transform.childCount; i++)
-        //{
-        //    _levelItemsList[CurrentLevel - 1].Gear.transform.GetChild(i).gameObject.SetActive(true);
-        //}
-        //for (int i = 0; i < _levelItemsList[CurrentLevel - 1].Enemy.transform.childCount; i++)
-        //{
-        //    _levelItemsList[CurrentLevel - 1].Enemy.transform.GetChild(i).gameObject.SetActive(true);
-        //}
-        //GameManager.Instance.MobileController.EnableMobileControls();
         Debug.Log("Game Restart");
+        GameManager.Instance.BikeController.gameObject.SetActive(false);
+        GameManager.Instance.TimerController.StopTimer();
+        GameManager.Instance.TimerController.ResetTimer();
         GameManager.Instance.BikeController.gameObject.SetActive(true);
-        GameManager.Instance.MobileController.EnableMobileControls();
-        GameManager.Instance.TimerController.TimerStart();
     }
 
     public void OnGameLevelComplete()
     {
         Debug.Log("GameLevelComplete");
-        _levelData[_levelDataCurrentIndex].IsCompleted = true;
+        GameManager.Instance.TimerController.StopTimer();
+       _levelData[_levelDataCurrentIndex].IsCompleted = true;
         GameManager.Instance.RewardManager.RewardPlayer();
         if (CurrentLevelNumber < _levelData.Count) _levelData[CurrentLevelNumber].IsLocked = false;
         SaveLevelData();
         GameManager.Instance.SaveManager.SaveWalletData();
-        //OpenGameResult Panel Here and redirect to level selection
+        OpenGameResult();
+        GameManager.Instance.BikeController.StopBikeMovement();
     }
     [ContextMenu("SavePRefs")]
     public void SaveLevelData()

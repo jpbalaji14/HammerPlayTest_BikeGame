@@ -3,28 +3,26 @@ using UnityEngine;
 
 public class TimerController : MonoBehaviour
 {
-         // UI Text to display the timer
-    public float startTime = 0f;   // Time in seconds
-    public bool countDown = false; // Count down or up
-
-    private float currentTime;
-    private bool isRunning = false;
+    public bool IsRunning = false;
+    [SerializeField] private float _startTime = 0f;
+    public bool _countDown = false; // Count down or up
+    private float _currentTime;
 
     public void TimerStart()
     {
-        currentTime = startTime;
+        _currentTime = _startTime;
         StartTimer();
     }
 
     void Update()
     {
-        if (!isRunning) return;
+        if (!IsRunning) return;
 
-        currentTime += countDown ? -Time.deltaTime : Time.deltaTime;
+        _currentTime += _countDown ? -Time.deltaTime : Time.deltaTime;
 
-        if (countDown && currentTime <= 0f)
+        if (_countDown && _currentTime <= 0f)
         {
-            currentTime = 0f;
+            _currentTime = 0f;
             StopTimer();
         }
 
@@ -33,29 +31,29 @@ public class TimerController : MonoBehaviour
 
     public void StartTimer()
     {
-        isRunning = true;
+        IsRunning = true;
     }
 
     public void StopTimer()
     {
-        isRunning = false;
+        IsRunning = false;
     }
 
     public void ResetTimer()
     {
-        currentTime = startTime;
+        _currentTime = _startTime;
         UpdateTimerUI();
     }
 
     private void UpdateTimerUI()
     {
-        int minutes = Mathf.FloorToInt(currentTime / 60f);
-        int seconds = Mathf.FloorToInt(currentTime % 60f);
-        GameManager.Instance.UiManager.UpdateTimerText(minutes,seconds);
+        int seconds = Mathf.FloorToInt(_currentTime % 60f);
+        int milliseconds = Mathf.FloorToInt((_currentTime * 1000f) % 1000f);
+        GameManager.Instance.UiManager.UpdateTimerText(seconds,milliseconds);
     }
 
     public float GetTime()
     {
-        return currentTime;
+        return _currentTime;
     }
 }
