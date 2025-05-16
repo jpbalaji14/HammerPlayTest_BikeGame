@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BikeController : MonoBehaviour
@@ -56,6 +57,7 @@ public class BikeController : MonoBehaviour
     private void FixedUpdate()
     {
         ApplyWheelTorque();
+       
     }
     private void ApplyWheelTorque()
     {

@@ -105,7 +105,9 @@ public class ShopManager : MonoBehaviour
     {
         if (_shopItemsDataList[_currentItemIndex].UnlockAmount <= GameManager.Instance.Coins)
         {
+           
             GameManager.Instance.RewardManager.OnShopPurchaseClicked();
+            GameManager.Instance.AudioManager.CoinsDeduct();
             _lockGameobject.SetActive(false);
             _shopItemsDataList[_currentItemIndex].IsUnlocked = true;
             SortShopList();

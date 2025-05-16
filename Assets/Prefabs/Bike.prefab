@@ -528,7 +528,7 @@ MonoBehaviour:
   _bikeCrashColor: {r: 0.4056604, g: 0.38843897, b: 0.38843897, a: 1}
   _speed: 400
   _rotatitonSpeed: 300
-  _tiltTorque: 15
+  _tiltTorque: 14
   _moveInput: 0
   _isStartedMoving: 0
 --- !u!82 &3387573815456142441

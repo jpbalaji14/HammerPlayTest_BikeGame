@@ -9,7 +9,10 @@ public class LevelPrefabData : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _timeValueText;
     public void CheckLevelLockState(bool _isLevelLocked)
     {
-        if (_isLevelLocked) _lockGameobject.SetActive(true);
+        if (_isLevelLocked) { _lockGameobject.SetActive(true); }
+        else {
+            _lockGameobject.SetActive(false);
+        }
         //keep lock false by default
     }
     public void UpdateLevelInfo(string timeValue)

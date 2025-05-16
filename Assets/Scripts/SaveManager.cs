@@ -94,4 +94,10 @@ public class SaveManager:MonoBehaviour
         GameManager.Instance.ShopManager.SetupShop();
     }
     #endregion
+
+    public void ClearGameData()
+    {
+        PlayerPrefs.DeleteAll();
+        GameManager.Instance.MenuManager.QuitGame();
+    }
 }

@@ -16,7 +16,7 @@ public class CollisionManager : MonoBehaviour
     {
         if (this.gameObject.tag == "PlayerBody" && collision.gameObject.tag == "Ground")
         {
-            GameManager.Instance.BikeController.CrashBike();
+           GameManager.Instance.BikeController.CrashBike();
             Invoke(nameof(RestartGame),2f);
         } 
         

@@ -28,7 +28,7 @@ public class RewardManager : MonoBehaviour
             var _targetDelay = i*_coinDelay;
             ShowCoinparticles(_targetDelay);
         }
-        
+        GameManager.Instance.AudioManager.CoinsCollect();
         StartCoroutine(MoveToNextLevel());
     }
     public void OnShopPurchaseClicked()

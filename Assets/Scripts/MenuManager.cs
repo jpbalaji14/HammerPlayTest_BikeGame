@@ -110,9 +110,10 @@ public class MenuManager : MonoBehaviour
     public void UpdateLevelData()
     {
         Debug.Log("UpdateLevelData");
-        for (int i = 0; i < _levelData.Count; i++) 
+        for (int i = 0; i < _levelData.Count; i++)
         {
             _levelPlayableGameobjectList[i].gameObject.SetActive(false); //Disables All Game Playable Level Prefab from Hierarchy
+           // Debug.Log("<<<<" + i +" is "+ _levelData[i].IsLocked);
             _levelGameObjectList[i].CheckLevelLockState(_levelData[i].IsLocked); //Check if Level is Unlocked and removes lock gameobject from level selection panel game level prefab
             _levelGameObjectList[i].UpdateLevelInfo(_levelData[i].BestTime); //Check if Level is Unlocked and removes lock gameobject from level selection panel game level prefab
         }
@@ -147,9 +148,14 @@ public class MenuManager : MonoBehaviour
         GameManager.Instance.TimerController.StopTimer();
        _levelData[_levelDataCurrentIndex].IsCompleted = true;
         GameManager.Instance.RewardManager.RewardPlayer();
-        if (CurrentLevelNumber <= _levelData.Count) 
-        { 
-            _levelData[CurrentLevelNumber].IsLocked = false;
+        if (CurrentLevelNumber <= _levelData.Count)
+        {
+            Debug.Log("<");
+            if (CurrentLevelNumber < _levelData.Count)
+            {
+                Debug.Log("<<<");
+                _levelData[CurrentLevelNumber].IsLocked = false;
+            }
             CheckAndUpdateQuickerGameFinishTime();
         }
         SaveLevelData();
@@ -159,6 +165,15 @@ public class MenuManager : MonoBehaviour
 
     }
 
+    public void OnMenuClickFromGame()
+    {
+       Invoke(nameof(ResetTimerAndBike),0.8f);
+    }
+    void ResetTimerAndBike()
+    {
+        GameManager.Instance.TimerController.StopTimer();
+        GameManager.Instance.BikeController.DestroyBike();
+    }
     void CheckAndUpdateQuickerGameFinishTime()
     {
         if (!string.IsNullOrEmpty(_levelData[_levelDataCurrentIndex].BestTime))
