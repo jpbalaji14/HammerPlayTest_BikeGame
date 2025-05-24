@@ -37,11 +37,15 @@ public class AudioManager : MonoBehaviour
     {
         _sfxAudioSource.clip = _buttonClick;
         _sfxAudioSource.Play();
+        
+        //test
     } 
     
     public void LevelComplete()
     {
         _sfxAudioSource.clip = _levelComplete;
         _sfxAudioSource.Play();
+
+        //test2
     }
 }
